@@ -27,7 +27,7 @@ response = requests.get(url, params=params)
 if response.status_code == 200 :
     res = json.loads(response.content)
     os.makedirs("data", exist_ok=True)  # 폴더 생성
-    with open('data/medicine2.txt', 'a', encoding='utf-8') as fw :
+    with open('data/medicine.txt', 'a', encoding='utf-8') as fw :
         for item in res['body']['items'] :
             
             entpName = item['entpName'].replace('\n', '') if item['entpName'] is not None else ''
@@ -38,5 +38,5 @@ if response.status_code == 200 :
             intrcQesitm = item['intrcQesitm'].replace('\n', '') if item['intrcQesitm'] is not None else ''
             seQesitm = item['seQesitm'].replace('\n', '') if item['seQesitm'] is not None else ''
                         
-            fw.write(item['itemName']+'\n'+entpName+'\n'+efcyQesitm+'\n'+useMethodQesitm+'\n'+atpnQesitm+'\n'+depositMethodQesitm+'\n\n')
+            fw.write(item['itemName']+' '+entpName+' '+efcyQesitm+' '+useMethodQesitm+' '+atpnQesitm+' '+depositMethodQesitm+'\n\n')
 
