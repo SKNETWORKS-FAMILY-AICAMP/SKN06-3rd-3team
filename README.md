@@ -154,7 +154,7 @@ config = {"configurable": {"session_id":"id-1"}}
 > 고마워요 OPEN API!!!
 > 
 김승현
->
+>도움이 많이 못되어 죄송해요. 팀원분들 정말 최고십니다ㅏ!
 성은진
 >
 장예린
