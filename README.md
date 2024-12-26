@@ -28,7 +28,7 @@
 
 ## 📝 주요 기능
 ✔️ 증상 기반 의약품 추천
-- 사용자가 입력한 **증상을 기반**으로 적합한 약물 2가지를 추천 및 비교
+- 사용자가 입력한 **증상을 기반**으로 적합한 약물 3가지를 추천 및 비교
 - 부작용이 적고 복용이 간편한 약을 우선 추천
 
 ✔️ 약물 정보 제공
@@ -139,6 +139,21 @@ splitter = RecursiveCharacterTextSplitter(
 )
 
 docs = loader.load_and_split(splitter)
+
+embedding_model = OpenAIEmbeddings(model=EMBEDDING_MODEL_NAME)
+
+# vector_store = Chroma.from_documents(
+#     documents=docs,
+#     embedding=embedding_model,
+#     collection_name=COLLECTION_NAME,
+#     persist_directory=PERSIST_DIRECTORY
+# )
+
+vector_store = Chroma(
+    embedding_function=embedding_model,
+    collection_name=COLLECTION_NAME,
+    persist_directory=PERSIST_DIRECTORY
+)
 ```
 
 ### RAG(Retrieval Augmented Generation) Chain 생성
@@ -165,6 +180,9 @@ config = {"configurable": {"session_id":"id-1"}}
 
 
 ### 성능 테스트
+
+![스크린샷 2024-12-26 192235](https://github.com/user-attachments/assets/10ba5b44-b2a2-4386-8041-cbada2aafe89)
+
 ![image](https://github.com/user-attachments/assets/84b6fa37-7416-4fe0-8570-f54ceca85ec0)
 
 ![image](https://github.com/user-attachments/assets/92f0c5df-70a0-4de1-a134-ac26f90cf8d4)
