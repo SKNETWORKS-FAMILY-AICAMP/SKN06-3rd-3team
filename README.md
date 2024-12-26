@@ -146,6 +146,8 @@ docs = loader.load_and_split(splitter)
 def get_context(input_data:dict):
     return retriever.invoke(input_data['question'])
 
+model = ChatOpenAI(model='gpt-4o-mini')
+
 runnable = {'context':RunnableLambda(get_context), 'question':itemgetter("question"), 'history':itemgetter('history')} | prompt_template | model | parser
 
 chain = RunnableWithMessageHistory(
