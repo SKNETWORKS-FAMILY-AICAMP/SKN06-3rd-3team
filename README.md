@@ -17,9 +17,11 @@
 - 사용자가 입력한 증상이나 상황, 약물정보를 바탕으로 의약품과 약국에 대한 정보를 함께 안내하는 **지능형 의료 상담 서비스**를 개발하고자 했습니다.
 
 ✔️ 개발 목적
+
 사용자 맞춤형 정보제공
--데이터베이스 내에서 사용자가 입력한 정보에 따른 의약품 추천
--사용자 위치정보를 이용해 근처 약국 추천
+- 데이터베이스 내에서 사용자가 입력한 정보에 따른 의약품 추천
+- 사용자 위치정보를 이용해 근처 약국 추천
+
 실시간 상호작용
 - 사용자의 추가 질문에 **실시간으로 답변**
 - 새로운 증상이나 상황을 입력하면 즉시 재추천 
@@ -63,8 +65,8 @@
 
 ### 데이터 수집 및 전처리
 ---
-- 공공데이터포털(www.data.go.kr) 에서 의약품개요정보, 의약품 회수 및 판매중지 정보, 서울시 약국 운영시간 정보 등 데이터 다운
-- 데이터 로드 
+- 공공데이터포털(www.data.go.kr) 에서 의약품개요정보, 서울시 약국 운영시간 정보 등 데이터 다운
+#### 데이터 로드 
  ```python3
    from langchain_community.document_loaders import TextLoader
    path = r'data/medicine.txt'
@@ -75,20 +77,34 @@
    docs = loader.load()
 ```
 
-#### 전처리
+```python3
+  
+def read_file() :
+    # CSV 파일 경로 설정
+    pharmacy_data_path = r"data/pharmacy.csv"
+
+    # CSV 파일 읽기
+    try:
+        return pd.read_csv(pharmacy_data_path, encoding='utf-8')
+    except Exception as e:
+        return None
+
+pharmacy_data = read_file()
 ```
- 오픈 API - https://www.data.go.kr/data/15075057/openapi.do 데이터 JSON 환경으로 가져와서 TXT 파일로 변환 (make_file.py 참고)
+
+##### 전처리
+```
+ 오픈 API - https://www.data.go.kr/data/15075057/openapi.do 등의 데이터를 JSON 환경으로 가져와서 TXT 파일로 변환 (make_file.py 참고)
 ```        
-
-
+---
 ### 사용 데이터
 -  https://www.data.go.kr/data/15075057/openapi.do
 -  https://www.data.go.kr/data/15098095/openapi.do
 -  https://www.data.go.kr/data/15059114/openapi.do
 -  https://data.seoul.go.kr/dataList/OA-20402/S/1/datasetView.do
-
+---
 ### 벡터스토어 생성
-```
+```python3
 # 문서 load and split
 splitter = RecursiveCharacterTextSplitter(
     chunk_size=1000,
@@ -99,11 +115,27 @@ docs = loader.load_and_split(splitter)
 ```
 
 ### RAG(Retrieval Augmented Generation) Chain 생성
+```python3
+def get_context(input_data:dict):
+    return retriever.invoke(input_data['question'])
 
+runnable = {'context':RunnableLambda(get_context), 'question':itemgetter("question"), 'history':itemgetter('history')} | prompt_template | model | parser
+
+chain = RunnableWithMessageHistory(
+    runnable=runnable,
+    get_session_history=get_session_history,
+    input_messages_key="question",
+    history_messages_key="history"
+)
+
+config = {"configurable": {"session_id":"id-1"}}
+```
   
-## 챗봇 생성
--
-## 성능 테스트
+### 프롬프트
+![스크린샷 2024-12-26 171822](https://github.com/user-attachments/assets/4982965f-4f9e-4a62-8c03-e38ddbc1669f)
+
+
+### 성능 테스트
 -
 
 
@@ -111,18 +143,16 @@ docs = loader.load_and_split(splitter)
 
 
 ## 🪄향후 계획 및 개선점
-### 1. 위치 안내 서비스
-- 의약품 추천과 더불어 안전 상비의약품 판매가 가능한 편의점등의 위치 제공서비스
-- 추천 의약품 재고가 있는 약국 정보 제공
 
-### 2. 회수 판매 중지 정보 제공
+### 회수 판매 중지 정보 제공
 - 기존 사용자가 가지고 있던 약에 대한 정보 제공.
 - 현재 가지고 있는 약이 회수 및 판매 중지 제품일 경우 정보 제공
 
 
 ## 💭팀원 회고
 김동훈
->
+> 고마워요 OPEN API!!!
+> 
 김승현
 >
 성은진
