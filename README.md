@@ -95,7 +95,35 @@ pharmacy_data = read_file()
 ##### 전처리
 ```
  오픈 API - https://www.data.go.kr/data/15075057/openapi.do 등의 데이터를 JSON 환경으로 가져와서 TXT 파일로 변환 (make_file.py 참고)
-```        
+```
+```python3
+def recommend_pharmacy() :
+    # 사용자 위치 가져오기 및 약국 추천 실행
+    if pharmacy_data is not None:
+        user_location = get_user_location_by_ip()
+        text = ''
+        if user_location:
+            nearby_pharmacies = recommend_nearby_pharmacies(user_location)
+
+            # 결과 출력
+            if nearby_pharmacies:
+                for pharmacy in nearby_pharmacies:
+                    text += f"{pharmacy['name']} {pharmacy['address']} {pharmacy['phone']} {pharmacy['distance']} km 평일: {pharmacy['hours']['weekday']} 토요일: {pharmacy['hours']['saturday']} 일요일: {pharmacy['hours']['sunday']}\n"
+            else:
+                text = "근처에 추천할 약국이 없습니다."
+        else:
+            text = "사용자 위치를 가져오는 데 실패했습니다."
+
+        summary_prompt = PromptTemplate(
+            template="근처 약국에 대한 내용이야. 다음 내용을 요약해줘.\n[요약할 내용]\n{content}"
+        )
+        summary_model = ChatOpenAI(model="gpt-4o-mini")
+        summary_chain = summary_prompt | summary_model | StrOutputParser()
+        summary_result = summary_chain.invoke({"content":text})
+        return summary_result
+    else:
+        print("약국 데이터를 로드하지 못했습니다. 파일 경로와 내용을 확인하세요.")
+```
 ---
 ### 사용 데이터
 -  https://www.data.go.kr/data/15075057/openapi.do
