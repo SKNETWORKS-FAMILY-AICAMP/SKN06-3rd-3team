@@ -164,7 +164,10 @@ config = {"configurable": {"session_id":"id-1"}}
 
 
 ### 성능 테스트
--
+![image](https://github.com/user-attachments/assets/84b6fa37-7416-4fe0-8570-f54ceca85ec0)
+
+![image](https://github.com/user-attachments/assets/92f0c5df-70a0-4de1-a134-ac26f90cf8d4)
+
 
 
 
