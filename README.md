@@ -126,10 +126,9 @@ def recommend_pharmacy() :
 ```
 ---
 ### 사용 데이터
--  https://www.data.go.kr/data/15075057/openapi.do
--  https://www.data.go.kr/data/15098095/openapi.do
--  https://www.data.go.kr/data/15059114/openapi.do
--  https://data.seoul.go.kr/dataList/OA-20402/S/1/datasetView.do
+-  https://www.data.go.kr/data/15075057/openapi.do - 식품의약품안전처_의약품개요정보(e약은요)
+-  https://www.data.go.kr/data/15059114/openapi.do - 식품의약품안전처_의약품 회수·판매중지 정보
+-  https://data.seoul.go.kr/dataList/OA-20402/S/1/datasetView.do - 서울시 약국 운영시간 정보
 ---
 ### 벡터스토어 생성
 ```python3
