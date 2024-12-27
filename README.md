@@ -64,7 +64,6 @@
 ## 상세내용
 
 ### 데이터 수집 및 전처리
----
 - 공공데이터포털(www.data.go.kr) 에서 의약품개요정보, 서울시 약국 운영시간 정보 등 데이터 다운
 #### 데이터 로드 
  ```python3
@@ -77,8 +76,7 @@
    docs = loader.load()
 ```
 
-```python3
-  
+```python3  
 def read_file() :
     # CSV 파일 경로 설정
     pharmacy_data_path = r"data/pharmacy.csv"
@@ -141,20 +139,13 @@ docs = loader.load_and_split(splitter)
 
 embedding_model = OpenAIEmbeddings(model=EMBEDDING_MODEL_NAME)
 
-# vector_store = Chroma.from_documents(
-#     documents=docs,
-#     embedding=embedding_model,
-#     collection_name=COLLECTION_NAME,
-#     persist_directory=PERSIST_DIRECTORY
-# )
-
 vector_store = Chroma(
     embedding_function=embedding_model,
     collection_name=COLLECTION_NAME,
     persist_directory=PERSIST_DIRECTORY
 )
 ```
-
+---
 ### RAG(Retrieval Augmented Generation) Chain 생성
 ```python3
 def get_context(input_data:dict):
@@ -173,11 +164,11 @@ chain = RunnableWithMessageHistory(
 
 config = {"configurable": {"session_id":"id-1"}}
 ```
-  
+---  
 ### 프롬프트
 ![스크린샷 2024-12-26 171822](https://github.com/user-attachments/assets/4982965f-4f9e-4a62-8c03-e38ddbc1669f)
 
-
+---
 ### 성능 테스트
 
 ![스크린샷 2024-12-26 192235](https://github.com/user-attachments/assets/10ba5b44-b2a2-4386-8041-cbada2aafe89)
@@ -190,14 +181,14 @@ config = {"configurable": {"session_id":"id-1"}}
 
 
 
-
+---
 ## 🪄향후 계획 및 개선점
 
 ### 회수 판매 중지 정보 제공
 - 제품 추천 시 회수 정보가 있는 제품일 경우 데이터 추가 제공
 - 사용자가 언급한 제품이 회수 및 판매 중지 제품일 경우 정보 제공
 
-
+---
 ## 💭팀원 회고
 김동훈
 > 고마워요 OPEN API!!!
